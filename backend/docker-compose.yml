@@ -1,0 +1,29 @@
+services:
+  api:
+    build: .
+    env_file:
+      - .env      
+    environment:
+      - FLASK_APP=app.py
+      - DATABASE_URL=${DATABASE_URL:-postgresql+psycopg2://kidride:kidride@db:5432/kidride}
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kidride}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kidride}
+      POSTGRES_DB: ${POSTGRES_DB:-kidride}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
