@@ -1,4 +1,5 @@
 # KidRide Flask Backend Skeleton
+#Changes 1> DOB should be MM/YYYY 2> Profile Pics for both parents and kids 3
 
 ## Quickstart (local venv)
 1. `python -m venv .venv && .venv\Scripts\activate` (Windows) or `source .venv/bin/activate` (macOS/Linux).
