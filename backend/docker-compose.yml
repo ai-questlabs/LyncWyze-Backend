@@ -5,7 +5,8 @@ services:
       - .env      
     environment:
       - FLASK_APP=app.py
-      - DATABASE_URL=${DATABASE_URL:-postgresql+psycopg2://kidride:kidride@db:5432/kidride}
+      # Force Postgres inside Docker dev so a local .env value like sqlite:///... can't accidentally win.
+      - DATABASE_URL=postgresql+psycopg2://kidride:kidride@db:5432/kidride
     ports:
       - "5000:5000"
     volumes:

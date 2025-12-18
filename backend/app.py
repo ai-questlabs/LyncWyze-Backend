@@ -12,6 +12,19 @@ def create_app(config_class=Config) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # Log DB target on startup to eliminate ambiguity in container logs.
+    # Redact password if present (e.g., postgresql+psycopg2://user:pass@host/db).
+    db_uri = app.config.get("SQLALCHEMY_DATABASE_URI")
+    if isinstance(db_uri, str):
+        redacted = db_uri
+        if "://" in redacted and "@" in redacted:
+            scheme, rest = redacted.split("://", 1)
+            creds_and_host, tail = rest.split("@", 1)
+            if ":" in creds_and_host:
+                user = creds_and_host.split(":", 1)[0]
+                redacted = f"{scheme}://{user}:***@{tail}"
+        app.logger.info("SQLALCHEMY_DATABASE_URI=%s", redacted)
+
     db.init_app(app)
     CORS(app, resources={r"/*": {"origins": app.config.get("CORS_ALLOW_ORIGINS", ["*"])}})
 
