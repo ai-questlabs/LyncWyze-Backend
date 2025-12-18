@@ -10,6 +10,7 @@
 ## Quickstart (Docker)
 - `docker compose up --build`
 - API available at `http://localhost:5000`.
+- On startup, the API container runs `flask db upgrade` automatically to ensure the Postgres schema is up to date.
 
 ## Notable endpoints
 - `GET /health` — service heartbeat.
@@ -32,4 +33,14 @@
 
 ## Notes
 - Client apps should authenticate with Firebase client SDK, then send the ID token to protected routes. Server-side verification is stubbed in middleware and will work once Firebase Admin credentials are supplied.
-- Database migrations are not included yet; add Alembic when schemas firm up.
+- Database migrations use Alembic via Flask-Migrate.
+
+### Migrations (Docker)
+- Create a new migration after changing models:
+  - `docker compose exec api flask db migrate -m "describe change"`
+- Apply migrations:
+  - `docker compose exec api flask db upgrade`
+
+### Migrations (local)
+- `flask db migrate -m "describe change"`
+- `flask db upgrade`

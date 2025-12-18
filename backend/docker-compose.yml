@@ -12,8 +12,14 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
-    command: ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+      db:
+        condition: service_healthy
+    command:
+      [
+        "sh",
+        "-c",
+        "i=0; until flask db upgrade; do i=$((i+1)); if [ $i -ge 30 ]; then echo 'flask db upgrade failed after retries'; exit 1; fi; echo 'DB not ready yet; retrying...'; sleep 2; done; flask run --host=0.0.0.0 --port=5000",
+      ]
 
   db:
     image: postgres:15-alpine
@@ -21,6 +27,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-kidride}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kidride}
       POSTGRES_DB: ${POSTGRES_DB:-kidride}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
     ports:
       - "5432:5432"
     volumes:

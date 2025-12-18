@@ -37,7 +37,7 @@ class User(db.Model, TimestampMixin):
     first_name = db.Column(db.String(120))
     last_name = db.Column(db.String(120))
     phone = db.Column(db.String(32))
-    avatar_url = db.Column(db.String(255))
+    avatar_url = db.Column(db.Text)
     is_primary = db.Column(db.Boolean, default=False)
     verified = db.Column(db.Boolean, default=False)
 
@@ -53,6 +53,7 @@ class Kid(db.Model, TimestampMixin):
     first_name = db.Column(db.String(120), nullable=False)
     dob = db.Column(db.Date)
     gender = db.Column(db.String(32))
+    avatar_url = db.Column(db.Text)
 
 
 class Vehicle(db.Model, TimestampMixin):

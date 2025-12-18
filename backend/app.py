@@ -1,11 +1,14 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from config import Config
 from firebase_admin_setup import init_firebase
 from models import db
 from routes import register_blueprints
 from utils.helpers import json_response
+
+migrate = Migrate()
 
 
 def create_app(config_class=Config) -> Flask:
@@ -26,6 +29,7 @@ def create_app(config_class=Config) -> Flask:
         app.logger.info("SQLALCHEMY_DATABASE_URI=%s", redacted)
 
     db.init_app(app)
+    migrate.init_app(app, db)
     CORS(app, resources={r"/*": {"origins": app.config.get("CORS_ALLOW_ORIGINS", ["*"])}})
 
     with app.app_context():

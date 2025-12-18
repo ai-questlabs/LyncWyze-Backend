@@ -16,6 +16,7 @@ def add_kid():
     first_name = (payload.get("first_name") or "").strip()
     dob_raw = payload.get("dob")
     gender = payload.get("gender")
+    avatar_url = payload.get("avatar_url")
 
     if not first_name:
         return error_response("first_name is required", status_code=400)
@@ -40,6 +41,7 @@ def add_kid():
         parent_user_id=parent_user_id,
         dob=dob,
         gender=gender,
+        avatar_url=avatar_url,
     )
 
     return json_response(
@@ -50,6 +52,7 @@ def add_kid():
             "dob": kid.dob.isoformat() if kid.dob else None,
             "household_id": kid.household_id,
             "parent_user_id": kid.parent_user_id,
+            "avatar_url": kid.avatar_url,
         },
         status_code=201,
     )
@@ -73,6 +76,7 @@ def list_kids():
                 "dob": k.dob.isoformat() if k.dob else None,
                 "household_id": k.household_id,
                 "parent_user_id": k.parent_user_id,
+                "avatar_url": k.avatar_url,
             }
             for k in kids
         ]

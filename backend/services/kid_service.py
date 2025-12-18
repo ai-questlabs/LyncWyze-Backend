@@ -11,6 +11,7 @@ def create_kid(
     parent_user_id: Optional[str],
     dob: Optional[date] = None,
     gender: Optional[str] = None,
+    avatar_url: Optional[str] = None,
 ) -> Kid:
     kid = Kid(
         first_name=first_name,
@@ -18,6 +19,7 @@ def create_kid(
         parent_user_id=parent_user_id,
         dob=dob,
         gender=gender,
+        avatar_url=avatar_url,
     )
     db.session.add(kid)
     db.session.commit()

@@ -39,6 +39,7 @@ def auth_required(func):
             firebase_uid=firebase_uid,
             email=decoded.get("email"),
             first_name=decoded.get("name"),
+            avatar_url=decoded.get("picture"),
         )
         g.current_user = user
         return func(*args, **kwargs)

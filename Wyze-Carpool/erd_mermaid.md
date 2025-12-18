@@ -33,6 +33,7 @@ erDiagram
     text first_name
     date dob
     text gender
+    text avatar_url
     datetime created_at
   }
 
