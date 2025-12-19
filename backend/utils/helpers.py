@@ -18,6 +18,14 @@ def error_response(message: str, status_code: int = 400, errors: Optional[Dict[s
 
 def get_bearer_token() -> Optional[str]:
     auth_header = request.headers.get("Authorization", "")
+    from flask import current_app
+    
     if not auth_header.lower().startswith("bearer "):
+        current_app.logger.debug("Authorization header missing or not Bearer type")
         return None
-    return auth_header.split(" ", 1)[1].strip() or None
+    token = auth_header.split(" ", 1)[1].strip() or None
+    if token:
+        current_app.logger.debug("Bearer token extracted successfully")
+    else:
+        current_app.logger.debug("Bearer token was empty after extraction")
+    return token
