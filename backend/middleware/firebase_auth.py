@@ -11,8 +11,11 @@ from utils.helpers import error_response, get_bearer_token
 
 def _verify_token(token: str) -> Optional[Dict[str, Any]]:
     try:
-        return auth.verify_id_token(token)
-    except Exception:  # noqa: BLE001
+        decoded = auth.verify_id_token(token)
+        current_app.logger.info(f"Token verified successfully for uid: {decoded.get('uid')}")
+        return decoded
+    except Exception as e:  # noqa: BLE001
+        current_app.logger.warning(f"Token verification failed: {str(e)}")
         return None
 
 
