@@ -21,6 +21,7 @@ class Household(db.Model, TimestampMixin):
     name = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255))
     location = db.Column(db.String(255))
+    avatar_url = db.Column(db.Text)
 
     users = db.relationship("User", backref="household", lazy=True)
     kids = db.relationship("Kid", backref="household", lazy=True)
