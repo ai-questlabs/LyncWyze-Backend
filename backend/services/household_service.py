@@ -3,8 +3,21 @@ from typing import Optional
 from models import Household, User, db
 
 
-def create_household(*, name: str, address: Optional[str] = None, location: Optional[str] = None) -> Household:
-    household = Household(name=name, address=address, location=location)
+def create_household(
+    *,
+    name: str,
+    address: Optional[str] = None,
+    phone: Optional[str] = None,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None,
+) -> Household:
+    household = Household(
+        name=name,
+        address=address,
+        phone=phone,
+        latitude=latitude,
+        longitude=longitude,
+    )
     db.session.add(household)
     db.session.commit()
     return household

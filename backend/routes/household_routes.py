@@ -29,12 +29,32 @@ def create():
     payload = request.get_json(silent=True) or {}
     name = (payload.get("name") or "").strip()
     address = payload.get("address")
-    location = payload.get("location")
+    phone = payload.get("phone")
+    latitude = payload.get("latitude")
+    longitude = payload.get("longitude")
+
+    if latitude is not None:
+        try:
+            latitude = float(latitude)
+        except (TypeError, ValueError):
+            return error_response("latitude must be a number", status_code=400)
+
+    if longitude is not None:
+        try:
+            longitude = float(longitude)
+        except (TypeError, ValueError):
+            return error_response("longitude must be a number", status_code=400)
 
     if not name:
         return error_response("name is required", status_code=400)
 
-    household = create_household(name=name, address=address, location=location)
+    household = create_household(
+        name=name,
+        address=address,
+        phone=phone,
+        latitude=latitude,
+        longitude=longitude,
+    )
 
     current_user = getattr(g, "current_user", None)
     if current_user:
@@ -46,7 +66,9 @@ def create():
             "id": household.id,
             "name": household.name,
             "address": household.address,
-            "location": household.location,
+            "phone": household.phone,
+            "latitude": household.latitude,
+            "longitude": household.longitude,
         },
         status_code=201,
     )
@@ -65,7 +87,9 @@ def get_my_household():
             "id": household.id,
             "name": household.name,
             "address": household.address,
-            "location": household.location,
+            "phone": household.phone,
+            "latitude": household.latitude,
+            "longitude": household.longitude,
         }
     )
 

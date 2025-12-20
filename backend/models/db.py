@@ -20,7 +20,10 @@ class Household(db.Model, TimestampMixin):
     id = db.Column(db.String(36), primary_key=True, default=default_uuid)
     name = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255))
-    location = db.Column(db.String(255))
+    phone = db.Column(db.String(32))
+    # Use double precision for coordinates to avoid precision loss.
+    latitude = db.Column(db.Float(precision=53))
+    longitude = db.Column(db.Float(precision=53))
     avatar_url = db.Column(db.Text)
 
     users = db.relationship("User", backref="household", lazy=True)
