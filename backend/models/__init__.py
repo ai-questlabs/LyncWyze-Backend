@@ -1,3 +1,23 @@
-from .db import db, Household, User, Kid, Vehicle
+from .db import (
+    Activity,
+    ActivityDayTime,
+    ActivitySchedule,
+    Household,
+    Kid,
+    KidActivityEnrollment,
+    User,
+    Vehicle,
+    db,
+)
 
-__all__ = ["db", "Household", "User", "Kid", "Vehicle"]
+__all__ = [
+    "db",
+    "Household",
+    "User",
+    "Kid",
+    "Vehicle",
+    "Activity",
+    "ActivitySchedule",
+    "ActivityDayTime",
+    "KidActivityEnrollment",
+]

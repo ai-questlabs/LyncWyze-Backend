@@ -33,17 +33,8 @@ def create():
     latitude = payload.get("latitude")
     longitude = payload.get("longitude")
 
-    if latitude is not None:
-        try:
-            latitude = float(latitude)
-        except (TypeError, ValueError):
-            return error_response("latitude must be a number", status_code=400)
-
-    if longitude is not None:
-        try:
-            longitude = float(longitude)
-        except (TypeError, ValueError):
-            return error_response("longitude must be a number", status_code=400)
+    latitude = float(latitude) if latitude not in (None, "") else None
+    longitude = float(longitude) if longitude not in (None, "") else None
 
     if not name:
         return error_response("name is required", status_code=400)
